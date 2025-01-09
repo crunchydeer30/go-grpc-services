@@ -11,7 +11,6 @@ on:
 env:
   IMAGE_NAME: chat-service
   CONTAINER_NAME: chat-service-container
-  CONFIG_PATH: /config.chat.yml
 
 jobs:
   test:
@@ -72,4 +71,4 @@ jobs:
             docker login -u ${{ secrets.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ secrets.REGISTRY }}
             docker stop $CONTAINER_NAME
             docker rm $CONTAINER_NAME
-            docker run -p 50052:50052 --name $CONTAINER_NAME  -v .$CONFIG_PATH:$CONFIG_PATH -e CONFIG_PATH=$CONFIG_PATH ${{ secrets.REGISTRY }}/$IMAGE_NAME:$TAG_NAME
+            docker run -p 50052:50052 --name $CONTAINER_NAME  -v ./config.chat.yml:/config.chat.yml -e CONFIG_PATH=/config.chat.yml ${{ secrets.REGISTRY }}/$IMAGE_NAME:$TAG_NAME

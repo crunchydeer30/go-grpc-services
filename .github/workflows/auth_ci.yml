@@ -11,7 +11,6 @@ on:
 env:
   IMAGE_NAME: auth-service
   CONTAINER_NAME: auth-service-container
-  CONFIG_PATH: /config.auth.yml
 
 jobs:
   test:
@@ -72,4 +71,4 @@ jobs:
             docker login -u ${{ secrets.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ secrets.REGISTRY }}
             docker stop $CONTAINER_NAME
             docker rm $CONTAINER_NAME
-            docker run -p 50051:50051 --name $CONTAINER_NAME  -v .$CONFIG_PATH:$CONFIG_PATH -e CONFIG_PATH=$CONFIG_PATH ${{ secrets.REGISTRY }}/$IMAGE_NAME:$TAG_NAME
+            docker run -p 50051:50051 --name $CONTAINER_NAME  -v ./config.auth.yml:/config.auth.yml -e CONFIG_PATH=/config.auth.yml ${{ secrets.REGISTRY }}/$IMAGE_NAME:$TAG_NAME
