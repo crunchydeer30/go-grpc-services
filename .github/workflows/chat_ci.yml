@@ -9,7 +9,6 @@ on:
       - "services/chat/**"
 
 env:
-  REGISTRY: cr.selcloud.ru/golang-course
   IMAGE_NAME: chat-service
   CONTAINER_NAME: chat-service-container
   CONFIG_PATH: /config.chat.yml

@@ -9,7 +9,6 @@ on:
       - "services/auth/**"
 
 env:
-  REGISTRY: cr.selcloud.ru/golang-course
   IMAGE_NAME: auth-service
   CONTAINER_NAME: auth-service-container
   CONFIG_PATH: /config.auth.yml
