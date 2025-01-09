@@ -1,0 +1,12 @@
+[build]
+bin = "./tmp/main"
+cmd = "go build -o ./tmp/main ./cmd/."
+include_dir = ["cmd"]
+log = "stdout"
+stop_on_error = true
+
+[log]
+color = true
+
+[run]
+cmd = "./tmp/main"
