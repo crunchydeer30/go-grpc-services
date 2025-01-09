@@ -1,9 +1,11 @@
 package main
 
 import (
+	"chat/internal/config"
 	"chat/pkg/api/chat_v1"
 	"log"
 	"net"
+	"os"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -14,7 +16,13 @@ type server struct {
 }
 
 func main() {
-	lis, err := net.Listen("tcp", ":50052")
+	cfgPath := os.Getenv("CONFIG_PATH")
+	cfg, err := config.Load(cfgPath)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	lis, err := net.Listen("tcp", net.JoinHostPort(cfg.GRPC.Host, cfg.GRPC.Port))
 	if err != nil {
 		log.Fatal(err)
 	}

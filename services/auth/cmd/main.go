@@ -1,12 +1,14 @@
 package main
 
 import (
+	"auth_service/internal/config"
 	"auth_service/pkg/api/auth_v1"
 	"context"
 	"crypto/rand"
 	"encoding/base64"
 	"log"
 	"net"
+	"os"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -45,7 +47,13 @@ func (s *server) GetMe(ctx context.Context, req *auth_v1.GetMeRequest) (*auth_v1
 }
 
 func main() {
-	lis, err := net.Listen("tcp", ":50051")
+	cfgPath := os.Getenv("CONFIG_PATH")
+	cfg, err := config.Load(cfgPath)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	lis, err := net.Listen("tcp", net.JoinHostPort(cfg.GRPC.Host, cfg.GRPC.Port))
 	if err != nil {
 		log.Fatal(err)
 	}

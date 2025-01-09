@@ -12,6 +12,7 @@ env:
   REGISTRY: cr.selcloud.ru/golang-course
   IMAGE_NAME: auth-service
   CONTAINER_NAME: auth-service-container
+  CONFIG_PATH: /config.auth.yml
 
 jobs:
   test:
@@ -54,3 +55,22 @@ jobs:
           TAG_NAME=$(echo $GITHUB_SHA | head -c7)
           docker buildx create --use
           docker buildx build --no-cache --push --tag ${{ secrets.REGISTRY }}/$IMAGE_NAME:$TAG_NAME .
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-and-push
+
+    steps:
+      - name: Deploy
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          envs: IMAGE_NAME,REGISTRY,GITHUB_SHA,CONTAINER_NAME
+          script: |
+            TAG_NAME=$(echo $GITHUB_SHA | head -c7)
+            docker login -u ${{ secrets.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ env.REGISTRY }}
+            docker stop $CONTAINER_NAME
+            docker rm $CONTAINER_NAME
+            docker run -d -p 50051:50051 --name $CONTAINER_NAME $REGISTRY/$IMAGE_NAME:$TAG_NAME -v .$CONFIG_PATH:$CONFIG_PATH -e CONFIG_PATH=$CONFIG_PATH
