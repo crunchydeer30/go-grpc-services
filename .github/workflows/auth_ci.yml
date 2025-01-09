@@ -66,10 +66,10 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
-          envs: IMAGE_NAME,REGISTRY,GITHUB_SHA,CONTAINER_NAME
+          envs: IMAGE_NAME,GITHUB_SHA,CONTAINER_NAME
           script: |
             TAG_NAME=$(echo $GITHUB_SHA | head -c7)
-            docker login -u ${{ secrets.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ env.REGISTRY }}
+            docker login -u ${{ secrets.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ secrets.REGISTRY }}
             docker stop $CONTAINER_NAME
             docker rm $CONTAINER_NAME
-            docker run -d -p 50051:50051 --name $CONTAINER_NAME $REGISTRY/$IMAGE_NAME:$TAG_NAME -v .$CONFIG_PATH:$CONFIG_PATH -e CONFIG_PATH=$CONFIG_PATH
+            docker run -d -p 50051:50051 --name $CONTAINER_NAME ${{ secrets.REGISTRY }}/$IMAGE_NAME:$TAG_NAME -v .$CONFIG_PATH:$CONFIG_PATH -e CONFIG_PATH=$CONFIG_PATH
