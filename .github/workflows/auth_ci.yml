@@ -71,4 +71,4 @@ jobs:
             docker login -u ${{ secrets.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ secrets.REGISTRY }}
             docker stop $CONTAINER_NAME
             docker rm $CONTAINER_NAME
-            docker run -p 50051:50051 --name $CONTAINER_NAME  -v ./config.auth.yml:/config.auth.yml -e CONFIG_PATH=/config.auth.yml ${{ secrets.REGISTRY }}/$IMAGE_NAME:$TAG_NAME
+            docker run -d -p 50051:50051 --name $CONTAINER_NAME  -v ./config.auth.yml:/config.auth.yml -e CONFIG_PATH=/config.auth.yml ${{ secrets.REGISTRY }}/$IMAGE_NAME:$TAG_NAME
