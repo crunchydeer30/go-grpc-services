@@ -4,9 +4,11 @@ on:
   push:
     paths:
       - "services/auth/**"
+      - ".github/workflows/auth_ci.yml"
   pull_request:
     paths:
       - "services/auth/**"
+      - ".github/workflows/auth_ci.yml"
 
 env:
   IMAGE_NAME: auth-service
@@ -72,4 +74,4 @@ jobs:
             docker login -u ${{ secrets.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ secrets.REGISTRY }}
             docker stop $CONTAINER_NAME
             docker rm $CONTAINER_NAME
-            docker run -d -p 50051:50051 --name $CONTAINER_NAME  -v .$CONFIG_PATH:$CONFIG_PATH -e CONFIG_PATH=$CONFIG_PATH ${{ secrets.REGISTRY }}/$IMAGE_NAME:$TAG_NAME
+            docker run -p 50051:50051 --name $CONTAINER_NAME  -v .$CONFIG_PATH:$CONFIG_PATH -e CONFIG_PATH=$CONFIG_PATH ${{ secrets.REGISTRY }}/$IMAGE_NAME:$TAG_NAME
