@@ -49,7 +49,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	//
+
 	s := grpc.NewServer()
 	reflection.Register(s)
 	auth_v1.RegisterAuthServer(s, &server{})

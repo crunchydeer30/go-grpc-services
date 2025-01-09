@@ -18,7 +18,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	//
+
 	s := grpc.NewServer()
 	reflection.Register(s)
 	chat_v1.RegisterChatServer(s, &server{})
