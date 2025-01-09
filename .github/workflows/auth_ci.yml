@@ -4,11 +4,9 @@ on:
   push:
     paths:
       - "services/auth/**"
-      - ".github/workflows/auth_ci.yml"
   pull_request:
     paths:
       - "services/auth/**"
-      - ".github/workflows/auth_ci.yml"
 
 env:
   IMAGE_NAME: auth-service

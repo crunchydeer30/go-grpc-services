@@ -4,11 +4,9 @@ on:
   push:
     paths:
       - "services/chat/**"
-      - ".github/workflows/chat_ci.yml"
   pull_request:
     paths:
       - "services/chat/**"
-      - ".github/workflows/chat_ci.yml"
 
 env:
   IMAGE_NAME: chat-service
