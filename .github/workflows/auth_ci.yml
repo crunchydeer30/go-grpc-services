@@ -33,6 +33,7 @@ jobs:
           go test ./... -timeout 10s
 
   build-and-push:
+    needs: test
     name: Build and Push
     runs-on: ubuntu-latest
 
@@ -44,9 +45,11 @@ jobs:
         uses: docker/setup-buildx-action@v2
 
       - name: Login to Docker Registry
+        working-directory: services/auth
         run: docker login -u ${{ secrets.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ secrets.REGISTRY }}
 
       - name: Build and push
+        working-directory: services/auth
         run: |
           TAG_NAME=$(echo $GITHUB_SHA | head -c7)
           docker buildx create --use
